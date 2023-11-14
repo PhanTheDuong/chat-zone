@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -40,4 +41,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $slug = Str::slug($user->name);
+
+            // Kiểm tra xem slug có trùng không
+            $count = static::where('href', $slug)->count();
+
+            // Nếu trùng, thêm kí tự để tránh trùng
+            while ($count > 0) {
+                $slug = Str::slug($user->name) . '-' . Str::random(3);
+                $count = static::where('href', $slug)->count();
+            }
+
+            $user->href = $slug;
+        });
+    }
 }

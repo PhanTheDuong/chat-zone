@@ -101,20 +101,12 @@ class AuthSevice
         }
         DB::beginTransaction();
         try {
-            $href = Str::slug($request->name);
-            $href_count = 0;
-            while (User::where('href', $href)->exists()) {
-                $href_count++;
-                $href = Str::slug($request->name) . '-' . $href_count;
-            }
-
             $save = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'href' => $href,
                 'province' => $request->province,
                 'district' => $request->district,
                 'wards' => $request->wards

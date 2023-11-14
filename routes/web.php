@@ -36,6 +36,6 @@ Route::group([
     // end register
 
     Route::get('login/google', [AuthController::class, 'loginGoogle'])->name('login-google');
-    Route::get('auth/google/callback', [AuthController::class, 'loginGoogleCallback'])->name('loginGoogleCallback');
+    Route::get('auth/google/callback', [AuthController::class, 'loginGoogleCallback'])->name('login-google-callback');
     // end login google
 });

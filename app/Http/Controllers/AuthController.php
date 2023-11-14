@@ -73,4 +73,21 @@ class AuthController extends Controller
             ->with(['prompt' => 'select_account'])
             ->redirect();
     }
+
+    public function loginGoogleCallback(Request $request)
+    {
+        $user = Socialite::driver('google')->stateless()->user();
+        $existingUser = User::where('email', $user->email)->first();
+        if ($existingUser) {
+            Auth::login($existingUser, true);
+        } else {
+            $newUser = User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => Hash::make('TV123456'),
+            ]);
+            Auth::login($newUser, true);
+        }
+        return redirect()->to('/');
+    }
 }

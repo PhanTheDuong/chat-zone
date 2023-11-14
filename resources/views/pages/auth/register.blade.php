@@ -188,18 +188,18 @@
                         </div>
 
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="{{url('dang-nhap/facebook')}}" class="btn btn-icon btn-lg rounded-pill btn-text-facebook">
-                                <i class="tf-icons mdi mdi-24px mdi-facebook"></i>
-                            </a>
+{{--                            <a href="{{url('dang-nhap/facebook')}}" class="btn btn-icon btn-lg rounded-pill btn-text-facebook">--}}
+{{--                                <i class="tf-icons mdi mdi-24px mdi-facebook"></i>--}}
+{{--                            </a>--}}
 
-                            <a href="{{url('dang-nhap/twitter')}}" class="btn btn-icon btn-lg rounded-pill btn-text-twitter">
-                                <i class="tf-icons mdi mdi-24px mdi-twitter"></i>
-                            </a>
-                            <a href="javascript:;" class="btn btn-icon btn-lg rounded-pill btn-text-github">
-                                <i class="tf-icons mdi mdi-apple-icloud"></i>
-                            </a>
+{{--                            <a href="{{url('dang-nhap/twitter')}}" class="btn btn-icon btn-lg rounded-pill btn-text-twitter">--}}
+{{--                                <i class="tf-icons mdi mdi-24px mdi-twitter"></i>--}}
+{{--                            </a>--}}
+{{--                            <a href="javascript:;" class="btn btn-icon btn-lg rounded-pill btn-text-github">--}}
+{{--                                <i class="tf-icons mdi mdi-apple-icloud"></i>--}}
+{{--                            </a>--}}
 
-                            <a href="{{url('dang-nhap/google')}}"
+                            <a href="{{route('auth.login-google')}}"
                                class="btn btn-icon btn-lg rounded-pill btn-text-google-plus">
                                 <i class="tf-icons mdi mdi-24px mdi-google"></i>
                             </a>
