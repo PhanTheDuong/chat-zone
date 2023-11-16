@@ -3,14 +3,19 @@
 namespace App\Services;
 
 
+use App\Mail\SendCodeForgotPassEmail;
+use App\Models\password_reset;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Mail\RegistrationSuccessEmail;
+use Illuminate\Support\Facades\Mail;
 
 class AuthSevice
 {
@@ -65,6 +70,7 @@ class AuthSevice
             'message' => '',
             'success' => false,
         ];
+        DB::beginTransaction();
 
         $validator = Validator::make($request->all(), [
             'phone' => 'required|min:10',
@@ -99,7 +105,6 @@ class AuthSevice
                 'success' => false,
             ];
         }
-        DB::beginTransaction();
         try {
             $save = User::create([
                 'name' => $request->name,
@@ -113,6 +118,7 @@ class AuthSevice
             ]);
             DB::commit();
             if ($save) {
+                Mail::to($save->email)->queue(new RegistrationSuccessEmail($save));
                 Auth::login($save);
                 $result = [
                     'message' => 'Tạo tài khoản thành công',
@@ -125,6 +131,66 @@ class AuthSevice
                 ];
             }
         } catch (Exception $e) {
+            Log::error($e);
+            DB::rollback();
+        }
+
+        return $result;
+    }
+
+    public function processSendMailForgotPass($request){
+        $result = [
+            'message' => '',
+            'success' => false,
+        ];
+        DB::beginTransaction();
+
+        $validate = Validator::make($request->all(), [
+            'email' => 'required|email'
+        ], [
+            'email.required' => __('auth.email_required'),
+            'email.email' => __('auth.email')
+        ]);
+
+        if ($validate->fails()) {
+            $result = [
+                'message' => $validate->messages(),
+                'success' => false,
+            ];
+        }
+        try {
+            $values = $request->post();
+            $code = Str::random(12);
+            $expiresAt = Carbon::now()->addMinutes(2);
+
+            $row = Password_reset::where("email", $values['email'])->first();
+
+            if (!$row) {
+                Password_reset::create([
+                    'email' => $values['email'],
+                    'code' => $code,
+                    'expires_at' => $expiresAt
+                ]);
+            } else {
+                $row->update([
+                    'code' => $code,
+                    'expires_at' => $expiresAt
+                ]);
+            }
+
+            $Users = User::select('*')->where('email', $values['email'])->first();
+            if (!$Users) {
+                $result = [
+                    'message' => ['fail' => __('auth.email_not_found')],
+                    'success' => false,
+                ];
+            }
+            Mail::to($Users->email)->queue(new sendCodeForgotPassEmail($Users, $code ));
+            $result = [
+                'message' => ['msg' => __('auth.send_mail_success')],
+                'success' => true,
+            ];
+        }catch (Exception $e){
             Log::error($e);
             DB::rollback();
         }

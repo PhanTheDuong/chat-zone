@@ -1,12 +1,3 @@
-<?php
-
-use App\Models\Setting;
-
-$setting = Setting::select('*')->first();
-
-
-?>
-
 @extends('templates.auth.master')
 @section('content')
     <div class="position-relative">
@@ -18,9 +9,9 @@ $setting = Setting::select('*')->first();
                     <div class="app-brand justify-content-center mt-5">
                         <a href="javascript:;" class="app-brand-link gap-2">
                 <span class="app-brand-logo demo">
-                 <img src="{{url($setting->logo)}}" alt="">
+                <img src="{{url('uploads/logo/icon-logo.png')}}" alt="">
                 </span>
-                            <span class="app-brand-text demo text-heading fw-bold">{{$setting->name_web}}</span>
+                            <span class="app-brand-text demo text-heading fw-bold">Chat Zone</span>
                         </a>
                     </div>
                     <!-- /Logo -->
@@ -65,8 +56,8 @@ $setting = Setting::select('*')->first();
 @endsection
 @push('js')
     <script>
-        var routeCheckCode = "{{route('checkCode')}}"
-        var routeResetPass = "{{route('resetPass')}}"
+        {{--var routeCheckCode = "{{route('checkCode')}}"--}}
+        {{--var routeResetPass = "{{route('resetPass')}}"--}}
         var routeForgotPass = "{{route('forgotPass')}}"
     </script>
     <script src="{{ url('js/auth/code.js') }}"></script>

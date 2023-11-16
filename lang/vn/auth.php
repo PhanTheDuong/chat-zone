@@ -2,7 +2,7 @@
 
 return [
     'login' => 'Đăng Nhập',
-    'register' =>   'Đăng Ký Tài Khoản',
+    'register' => 'Đăng Ký Tài Khoản',
     'name_regex' => 'Vui lòng nhập họ tên hợp lệ',
     'name_required' => 'Vui lòng nhập tên',
     'name_max' => 'Trường tên không được quá 128 kí tự',
@@ -71,5 +71,10 @@ return [
     'content_post_required' => 'Bạn vui lòng nhập nội dung bài viết',
 
     'comment_post_required' => 'Bạn vui lòng nhập nội dung bình luận',
-    'comment_post_max'     => 'Bạn đã nhập quá nội dung quá 255 kí  tự'
+    'comment_post_max' => 'Bạn đã nhập quá nội dung quá 255 kí  tự',
+
+    'for_got_pass'  => 'Quên Mật Khẩu',
+    'confirm_otp'  => 'Quên Mật Khẩu',
+
+    'send_mail_success' => 'Hệ thống đã gửi cho bạn một mã xác nhận. Bạn vui lòng kiểm tra hòm thư để nhập mã xác nhận của mình',
 ];

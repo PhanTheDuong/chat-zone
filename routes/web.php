@@ -38,4 +38,8 @@ Route::group([
     Route::get('login/google', [AuthController::class, 'loginGoogle'])->name('login-google');
     Route::get('auth/google/callback', [AuthController::class, 'loginGoogleCallback'])->name('login-google-callback');
     // end login google
+
+    Route::get('forgot/password', [AuthController::class, 'forgotPassword'])->name('forgot-Pass');
+    Route::post('send/email/forgot/password', [AuthController::class, 'sendMailForgotPassword'])->name('send-mail-forgot-pass');
+    Route::get('code', [AuthController::class, 'formCode'])->name('form-code');
 });

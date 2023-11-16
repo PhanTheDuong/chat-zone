@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Password_reset;
 use App\Models\User;
 use App\Services\AuthSevice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -54,6 +56,7 @@ class AuthController extends Controller
     public function handleRegister(Request $request)
     {
         $check = $this->authService->processRegister($request);
+
         if ($check['success']){
             return response()->json([
                 'status' => 200,
@@ -65,6 +68,7 @@ class AuthController extends Controller
                 'errors' => $check['message']
             ]);
         }
+
     }
     /* end register */
 
@@ -90,4 +94,33 @@ class AuthController extends Controller
         }
         return redirect()->to('/');
     }
+    /* end login google */
+
+    public function forgotPassword()
+    {
+        $page_title = __('auth.for_got_pass');
+        return view('pages.auth.forgot_password', compact('page_title'));
+    }
+
+    public function sendMailForgotPassword(Request $request){
+      $sendMail =  $this->authService->processSendMailForgotPass($request);
+        if ($sendMail['success']){
+            return response()->json([
+                'status' => 200,
+                'success' => $sendMail['message']
+            ]);
+        }else{
+            return response()->json([
+                'status' => 400,
+                'errors' => $sendMail['message']
+            ]);
+        }
+    }
+
+    public function formCode()
+    {
+        $page_title = trans('auth.confirm_otp');
+        return view('pages.auth.form_code', compact('page_title'));
+    }
+
 }

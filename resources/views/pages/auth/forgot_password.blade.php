@@ -1,12 +1,3 @@
-<?php
-
-use App\Models\Setting;
-
-$setting = Setting::select('*')->first();
-
-
-?>
-
 @extends('templates.auth.master')
 @section('content')
     <div class="position-relative">
@@ -18,9 +9,9 @@ $setting = Setting::select('*')->first();
                     <div class="app-brand justify-content-center mt-5">
                         <a href="javascript:;" class="app-brand-link gap-2">
                 <span class="app-brand-logo demo">
-                 <img src="{{url($setting->logo)}}" alt="">
+                  <img src="{{url('uploads/logo/icon-logo.png')}}" alt="">
                 </span>
-                            <span class="app-brand-text demo text-heading fw-bold">{{$setting->name_web}}</span>
+                            <span class="app-brand-text demo text-heading fw-bold">Chat Zone</span>
                         </a>
                     </div>
                     <!-- /Logo -->
@@ -50,7 +41,7 @@ $setting = Setting::select('*')->first();
                 <!-- /Forgot Password -->
                 <img
                     alt="mask"
-                    src="{{url('themes/auth/img/illustrations/auth-basic-forgot-password-mask-light.png')}}"
+                    src="{{url('template/auth/img/illustrations/auth-basic-forgot-password-mask-light.png')}}"
                     class="authentication-image d-none d-lg-block"
                     data-app-light-img="illustrations/auth-basic-forgot-password-mask-light.png"
                     data-app-dark-img="illustrations/auth-basic-forgot-password-mask-dark.png"/>
@@ -61,8 +52,8 @@ $setting = Setting::select('*')->first();
 @endsection
 @push('js')
     <script>
-        var routeSendMail = "{{route('sendMail')}}"
-        var routeformCode = "{{route('formCode')}}"
+        var routeSendMail = "{{route('auth.send-mail-forgot-pass')}}"
+        var routeformCode = "{{route('auth.form-code')}}"
     </script>
     <script src="{{ url('js/auth/forgot.js') }}"></script>
 @endpush
